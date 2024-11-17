@@ -1,0 +1,17 @@
+C:\Users\Muhammad\Desktop\projects\numi\bin\Debug\net9.0-windows\numi.exe
+C:\Users\Muhammad\Desktop\projects\numi\bin\Debug\net9.0-windows\numi.deps.json
+C:\Users\Muhammad\Desktop\projects\numi\bin\Debug\net9.0-windows\numi.runtimeconfig.json
+C:\Users\Muhammad\Desktop\projects\numi\bin\Debug\net9.0-windows\numi.dll
+C:\Users\Muhammad\Desktop\projects\numi\bin\Debug\net9.0-windows\numi.pdb
+C:\Users\Muhammad\Desktop\projects\numi\bin\Debug\net9.0-windows\zxing.dll
+C:\Users\Muhammad\Desktop\projects\numi\obj\Debug\net9.0-windows\numi.csproj.AssemblyReference.cache
+C:\Users\Muhammad\Desktop\projects\numi\obj\Debug\net9.0-windows\numi.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Muhammad\Desktop\projects\numi\obj\Debug\net9.0-windows\numi.AssemblyInfoInputs.cache
+C:\Users\Muhammad\Desktop\projects\numi\obj\Debug\net9.0-windows\numi.AssemblyInfo.cs
+C:\Users\Muhammad\Desktop\projects\numi\obj\Debug\net9.0-windows\numi.csproj.CoreCompileInputs.cache
+C:\Users\Muhammad\Desktop\projects\numi\obj\Debug\net9.0-windows\numi.csproj.Up2Date
+C:\Users\Muhammad\Desktop\projects\numi\obj\Debug\net9.0-windows\numi.dll
+C:\Users\Muhammad\Desktop\projects\numi\obj\Debug\net9.0-windows\refint\numi.dll
+C:\Users\Muhammad\Desktop\projects\numi\obj\Debug\net9.0-windows\numi.pdb
+C:\Users\Muhammad\Desktop\projects\numi\obj\Debug\net9.0-windows\numi.genruntimeconfig.cache
+C:\Users\Muhammad\Desktop\projects\numi\obj\Debug\net9.0-windows\ref\numi.dll
