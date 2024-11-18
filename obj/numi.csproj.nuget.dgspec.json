@@ -1,25 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Muhammad\\Desktop\\projects\\numi\\numi.csproj": {}
+    "C:\\Users\\msaleh\\Desktop\\Projects\\numi\\numi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Muhammad\\Desktop\\projects\\numi\\numi.csproj": {
+    "C:\\Users\\msaleh\\Desktop\\Projects\\numi\\numi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Muhammad\\Desktop\\projects\\numi\\numi.csproj",
+        "projectUniqueName": "C:\\Users\\msaleh\\Desktop\\Projects\\numi\\numi.csproj",
         "projectName": "numi",
-        "projectPath": "C:\\Users\\Muhammad\\Desktop\\projects\\numi\\numi.csproj",
-        "packagesPath": "C:\\Users\\Muhammad\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Muhammad\\Desktop\\projects\\numi\\obj\\",
+        "projectPath": "C:\\Users\\msaleh\\Desktop\\Projects\\numi\\numi.csproj",
+        "packagesPath": "C:\\Users\\msaleh\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\msaleh\\Desktop\\Projects\\numi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Muhammad\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\msaleh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0-windows"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -51,6 +54,10 @@
             "microsoft.entityframeworkcore.design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "microsoft.entityframeworkcore.sqlite": {
               "target": "Package",
               "version": "[9.0.0, )"
             },
