@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\msaleh\\Desktop\\Projects\\numi\\numi.csproj": {}
+    "C:\\Users\\Muhammad\\Desktop\\projects\\numi\\numi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\msaleh\\Desktop\\Projects\\numi\\numi.csproj": {
+    "C:\\Users\\Muhammad\\Desktop\\projects\\numi\\numi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\msaleh\\Desktop\\Projects\\numi\\numi.csproj",
+        "projectUniqueName": "C:\\Users\\Muhammad\\Desktop\\projects\\numi\\numi.csproj",
         "projectName": "numi",
-        "projectPath": "C:\\Users\\msaleh\\Desktop\\Projects\\numi\\numi.csproj",
-        "packagesPath": "C:\\Users\\msaleh\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\msaleh\\Desktop\\Projects\\numi\\obj\\",
+        "projectPath": "C:\\Users\\Muhammad\\Desktop\\projects\\numi\\numi.csproj",
+        "packagesPath": "C:\\Users\\Muhammad\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Muhammad\\Desktop\\projects\\numi\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\msaleh\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Muhammad\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

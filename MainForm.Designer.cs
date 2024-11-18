@@ -30,58 +30,48 @@ partial class MainForm
     {
         components = new System.ComponentModel.Container();
         comboBoxCategories = new ComboBox();
-        dataGridView1 = new DataGridView();
         categoryBindingSource = new BindingSource(components);
-        productsBindingSource = new BindingSource(components);
-        idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+        dataGridViewProducts = new DataGridView();
         nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
         descriptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
         dimensionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-        categoryIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-        categoryDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+        productsBindingSource = new BindingSource(components);
         labelHeader = new Label();
         labelCategories = new Label();
         labelProducts = new Label();
         buttonPrint = new Button();
-        ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+        buttonSave = new Button();
         ((System.ComponentModel.ISupportInitialize)categoryBindingSource).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).BeginInit();
         ((System.ComponentModel.ISupportInitialize)productsBindingSource).BeginInit();
         SuspendLayout();
         // 
         // comboBoxCategories
         // 
         comboBoxCategories.DataSource = categoryBindingSource;
+        comboBoxCategories.DisplayMember = "Name";
         comboBoxCategories.FormattingEnabled = true;
         comboBoxCategories.Location = new Point(217, 99);
         comboBoxCategories.Name = "comboBoxCategories";
         comboBoxCategories.Size = new Size(296, 23);
         comboBoxCategories.TabIndex = 0;
-        // 
-        // dataGridView1
-        // 
-        dataGridView1.AutoGenerateColumns = false;
-        dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-        dataGridView1.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nameDataGridViewTextBoxColumn, descriptionDataGridViewTextBoxColumn, dimensionDataGridViewTextBoxColumn, categoryIdDataGridViewTextBoxColumn, categoryDataGridViewTextBoxColumn });
-        dataGridView1.DataSource = productsBindingSource;
-        dataGridView1.Location = new Point(44, 179);
-        dataGridView1.Name = "dataGridView1";
-        dataGridView1.Size = new Size(1169, 484);
-        dataGridView1.TabIndex = 1;
+        comboBoxCategories.SelectedIndexChanged += comboBoxCategories_SelectedIndexChanged;
         // 
         // categoryBindingSource
         // 
         categoryBindingSource.DataSource = typeof(src.domain.Models.Category);
         // 
-        // productsBindingSource
+        // dataGridViewProducts
         // 
-        productsBindingSource.DataMember = "Products";
-        productsBindingSource.DataSource = categoryBindingSource;
-        // 
-        // idDataGridViewTextBoxColumn
-        // 
-        idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-        idDataGridViewTextBoxColumn.HeaderText = "Id";
-        idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+        dataGridViewProducts.AutoGenerateColumns = false;
+        dataGridViewProducts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dataGridViewProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dataGridViewProducts.Columns.AddRange(new DataGridViewColumn[] { nameDataGridViewTextBoxColumn, descriptionDataGridViewTextBoxColumn, dimensionDataGridViewTextBoxColumn });
+        dataGridViewProducts.DataSource = productsBindingSource;
+        dataGridViewProducts.Location = new Point(44, 179);
+        dataGridViewProducts.Name = "dataGridViewProducts";
+        dataGridViewProducts.Size = new Size(1169, 374);
+        dataGridViewProducts.TabIndex = 1;
         // 
         // nameDataGridViewTextBoxColumn
         // 
@@ -101,17 +91,10 @@ partial class MainForm
         dimensionDataGridViewTextBoxColumn.HeaderText = "Dimension";
         dimensionDataGridViewTextBoxColumn.Name = "dimensionDataGridViewTextBoxColumn";
         // 
-        // categoryIdDataGridViewTextBoxColumn
+        // productsBindingSource
         // 
-        categoryIdDataGridViewTextBoxColumn.DataPropertyName = "CategoryId";
-        categoryIdDataGridViewTextBoxColumn.HeaderText = "CategoryId";
-        categoryIdDataGridViewTextBoxColumn.Name = "categoryIdDataGridViewTextBoxColumn";
-        // 
-        // categoryDataGridViewTextBoxColumn
-        // 
-        categoryDataGridViewTextBoxColumn.DataPropertyName = "Category";
-        categoryDataGridViewTextBoxColumn.HeaderText = "Category";
-        categoryDataGridViewTextBoxColumn.Name = "categoryDataGridViewTextBoxColumn";
+        productsBindingSource.DataMember = "Products";
+        productsBindingSource.DataSource = categoryBindingSource;
         // 
         // labelHeader
         // 
@@ -146,28 +129,42 @@ partial class MainForm
         // buttonPrint
         // 
         buttonPrint.Font = new Font("Segoe UI", 12F);
-        buttonPrint.Location = new Point(44, 692);
+        buttonPrint.Location = new Point(179, 587);
         buttonPrint.Name = "buttonPrint";
         buttonPrint.Size = new Size(111, 36);
         buttonPrint.TabIndex = 5;
         buttonPrint.Text = "Print";
         buttonPrint.UseVisualStyleBackColor = true;
+        buttonPrint.Click += buttonPrint_Click;
+        // 
+        // buttonSave
+        // 
+        buttonSave.Font = new Font("Segoe UI", 12F);
+        buttonSave.Location = new Point(44, 587);
+        buttonSave.Name = "buttonSave";
+        buttonSave.Size = new Size(111, 36);
+        buttonSave.TabIndex = 6;
+        buttonSave.Text = "Save";
+        buttonSave.UseVisualStyleBackColor = true;
+        buttonSave.Click += buttonSave_Click;
         // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1343, 771);
+        ClientSize = new Size(1343, 749);
+        Controls.Add(buttonSave);
         Controls.Add(buttonPrint);
         Controls.Add(labelProducts);
         Controls.Add(labelCategories);
         Controls.Add(labelHeader);
-        Controls.Add(dataGridView1);
+        Controls.Add(dataGridViewProducts);
         Controls.Add(comboBoxCategories);
         Name = "MainForm";
         Text = "Numi Products";
-        ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+        Load += MainForm_Load;
         ((System.ComponentModel.ISupportInitialize)categoryBindingSource).EndInit();
+        ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).EndInit();
         ((System.ComponentModel.ISupportInitialize)productsBindingSource).EndInit();
         ResumeLayout(false);
         PerformLayout();
@@ -176,17 +173,16 @@ partial class MainForm
     #endregion
 
     private ComboBox comboBoxCategories;
-    private DataGridView dataGridView1;
+    private DataGridView dataGridViewProducts;
     private BindingSource categoryBindingSource;
     private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-    private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
-    private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
-    private DataGridViewTextBoxColumn dimensionDataGridViewTextBoxColumn;
-    private DataGridViewTextBoxColumn categoryIdDataGridViewTextBoxColumn;
-    private DataGridViewTextBoxColumn categoryDataGridViewTextBoxColumn;
     private BindingSource productsBindingSource;
     private Label labelHeader;
     private Label labelCategories;
     private Label labelProducts;
     private Button buttonPrint;
+    private Button buttonSave;
+    private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
+    private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
+    private DataGridViewTextBoxColumn dimensionDataGridViewTextBoxColumn;
 }
