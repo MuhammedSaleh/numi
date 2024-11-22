@@ -41,9 +41,11 @@ partial class MainForm
         labelProducts = new Label();
         buttonPrint = new Button();
         buttonSave = new Button();
+        pictureBox1 = new PictureBox();
         ((System.ComponentModel.ISupportInitialize)categoryBindingSource).BeginInit();
         ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).BeginInit();
         ((System.ComponentModel.ISupportInitialize)productsBindingSource).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
         SuspendLayout();
         // 
         // comboBoxCategories
@@ -72,6 +74,7 @@ partial class MainForm
         dataGridViewProducts.Name = "dataGridViewProducts";
         dataGridViewProducts.Size = new Size(1169, 374);
         dataGridViewProducts.TabIndex = 1;
+        dataGridViewProducts.SelectionChanged += dataGridViewProducts_SelectionChanged;
         // 
         // nameDataGridViewTextBoxColumn
         // 
@@ -120,7 +123,7 @@ partial class MainForm
         // 
         labelProducts.AutoSize = true;
         labelProducts.Font = new Font("Segoe UI", 14F);
-        labelProducts.Location = new Point(44, 132);
+        labelProducts.Location = new Point(44, 142);
         labelProducts.Name = "labelProducts";
         labelProducts.Size = new Size(86, 25);
         labelProducts.TabIndex = 4;
@@ -148,11 +151,20 @@ partial class MainForm
         buttonSave.UseVisualStyleBackColor = true;
         buttonSave.Click += buttonSave_Click;
         // 
+        // pictureBox1
+        // 
+        pictureBox1.Location = new Point(896, 587);
+        pictureBox1.Name = "pictureBox1";
+        pictureBox1.Size = new Size(317, 85);
+        pictureBox1.TabIndex = 7;
+        pictureBox1.TabStop = false;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1343, 749);
+        Controls.Add(pictureBox1);
         Controls.Add(buttonSave);
         Controls.Add(buttonPrint);
         Controls.Add(labelProducts);
@@ -166,6 +178,7 @@ partial class MainForm
         ((System.ComponentModel.ISupportInitialize)categoryBindingSource).EndInit();
         ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).EndInit();
         ((System.ComponentModel.ISupportInitialize)productsBindingSource).EndInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -185,4 +198,5 @@ partial class MainForm
     private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
     private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
     private DataGridViewTextBoxColumn dimensionDataGridViewTextBoxColumn;
+    private PictureBox pictureBox1;
 }
