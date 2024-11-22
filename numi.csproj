@@ -20,6 +20,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="zxing.net" Version="0.16.9" />
+    <PackageReference Include="zxing.net.bindings.windows.compatibility" Version="0.16.12" />
   </ItemGroup>
 
 </Project>

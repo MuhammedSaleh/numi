@@ -1,9 +1,9 @@
 namespace numi;
 
+using System;
 using Microsoft.EntityFrameworkCore;
 using numi.src.domain.Data;
 using numi.src.domain.Models;
-using System;
 using ZXing;
 
 public partial class MainForm : Form
