@@ -1,19 +1,15 @@
-namespace numi;
-
-using System;
 using Microsoft.EntityFrameworkCore;
 using numi.src.domain.Data;
 using numi.src.domain.Models;
-using System;
+using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Drawing.Printing;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using ZXing;
-using ZXing.QrCode;
 using ZXing.Rendering;
+using ZXing.Windows.Compatibility;
 
+namespace numi;
 public partial class MainForm : Form
 {
     private AppDbContext? _dbContext;
@@ -34,24 +30,6 @@ public partial class MainForm : Form
         _dbContext.Categories.Load();
         this.categoryBindingSource.DataSource = _dbContext.Categories.Local.ToBindingList();
         UpdateDataGridViewProducts();
-        SetDatagridviewProductsStyle();
-    }
-
-    private void SetDatagridviewProductsStyle()
-    {
-        //dataGridViewProducts.DefaultCellStyle.BackColor = Color.White;
-        //dataGridViewProducts.DefaultCellStyle.ForeColor = Color.Black;
-        //dataGridViewProducts.DefaultCellStyle.SelectionBackColor = Color.Blue;
-        //dataGridViewProducts.DefaultCellStyle.SelectionForeColor = Color.White;
-        //dataGridViewProducts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        //dataGridViewProducts.GridColor = Color.Black;
-        //DataGridViewCellStyle customStyle = new DataGridViewCellStyle();
-        //customStyle.BackColor = Color.LightGray;
-        //customStyle.ForeColor = Color.Red;
-        //dataGridViewProducts.Rows[0].DefaultCellStyle = customStyle;
-        //dataGridViewProducts.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkGray;
-        //dataGridViewProducts.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-
     }
 
     protected override void OnClosed(EventArgs e)
@@ -90,23 +68,42 @@ public partial class MainForm : Form
 
     private void buttonPrint_Click(object sender, EventArgs e)
     {
-       // var writer = new BarcodeWriter<PixelData>
-       // {
-       //     Format = BarcodeFormat.CODE_128,
-       //     Renderer = new PixelDataRenderer(),
-       //     Options = new ZXing.Common.EncodingOptions()
-       //     {
-       //         Width = 812 / 2,
-       //         Height = 1218 / 2,
-       //         PureBarcode = false,
-       //         Margin = 10,
-       //     },
-       // };
-       // //writer.Options.Hints[EncodeHintType.DISABLE_ECI] = false;
+        //PrintLabel();
 
-       // var labelData = writer.Write("test test");
-       //_bitmap = GenereateBitMap();
-        PrintLabel();
+        PrintDocument printDocument = new();
+        printDocument.DocumentName = _currentProduct.ProductId + " " + _currentProduct.Name + " " + _currentProduct.Dimension;
+        printDocument.PrintPage += (sender, ev) =>
+        {
+            //printDocument.DefaultPageSettings = ev.PageSettings;
+            ev.PageSettings.PaperSize = printDocument.DefaultPageSettings.PaperSize;
+            //ev.PageSettings.PrinterSettings = printDocument.PrinterSettings;
+           var bitmap = GetBitmap(ev);
+            ev.Graphics?.DrawImage(bitmap, 50, 50, bitmap.Width + 150, bitmap.Height + 150);
+            //ev.Graphics?.DrawImage(bitmap, 10, 10, ); // Todo: Important for sizing
+        };
+        printDocument.Print();
+    }
+
+    private Bitmap GetBitmap(PrintPageEventArgs ev)
+    {
+        BarcodeWriter writer = new()
+        {
+            Format = BarcodeFormat.CODE_128,
+            //Renderer = new BitmapRenderer(),
+            Options = new()
+            {
+                Width = 100,
+                Height = 100,
+                Margin = 20,
+                NoPadding = true,
+                PureBarcode = true,
+            }
+        };
+        Debug.WriteLine(ev.MarginBounds.Width);
+        Debug.WriteLine(ev.MarginBounds.Height);
+        var barcodeData = _currentProduct.ProductId + " " + _currentProduct.Name + "-" + _currentProduct.Dimension;
+        writer.Write(barcodeData).Save(@"c:\users\muhammad\desktop\11.bmp");
+        return writer.Write(barcodeData);
     }
 
     private Bitmap GenereateBitMap()
@@ -166,7 +163,7 @@ public partial class MainForm : Form
 
         if (product is Product currentProduct)
         {
-           _currentProduct = currentProduct;
+            _currentProduct = currentProduct;
             GenereateBitMap();
             DispayLabel();
         }
