@@ -66,25 +66,35 @@ public partial class MainForm : Form
         dataGridViewProducts.Refresh();
     }
 
+    private void dataGridViewProducts_SelectionChanged(object sender, EventArgs e)
+    {
+        if (this._dbContext is null) return;
+        var product = dataGridViewProducts.CurrentRow?.DataBoundItem;
+
+        if (product is Product currentProduct)
+        {
+            _currentProduct = currentProduct;
+            _bitmap = GetBitmap();
+            pictureBoxBarcode.Image = _bitmap;
+        }
+    }
+
     private void buttonPrint_Click(object sender, EventArgs e)
     {
-        //PrintLabel();
+        PrintDocument printDocument = new()
+        {
+            DocumentName = _currentProduct.ProductId + " " + _currentProduct.Name + " " + _currentProduct.Dimension
+        };
 
-        PrintDocument printDocument = new();
-        printDocument.DocumentName = _currentProduct.ProductId + " " + _currentProduct.Name + " " + _currentProduct.Dimension;
         printDocument.PrintPage += (sender, ev) =>
         {
-            //printDocument.DefaultPageSettings = ev.PageSettings;
             ev.PageSettings.PaperSize = printDocument.DefaultPageSettings.PaperSize;
-            //ev.PageSettings.PrinterSettings = printDocument.PrinterSettings;
-           var bitmap = GetBitmap(ev);
-            ev.Graphics?.DrawImage(bitmap, 50, 50, bitmap.Width + 150, bitmap.Height + 150);
-            //ev.Graphics?.DrawImage(bitmap, 10, 10, ); // Todo: Important for sizing
+            ev.Graphics?.DrawImage(_bitmap, 0, 0);
         };
         printDocument.Print();
     }
 
-    private Bitmap GetBitmap(PrintPageEventArgs ev)
+    private Bitmap GetBitmap()
     {
         BarcodeWriter writer = new()
         {
@@ -96,78 +106,14 @@ public partial class MainForm : Form
                 Height = 100,
                 Margin = 20,
                 NoPadding = true,
-                PureBarcode = true,
+                PureBarcode = false,
             }
         };
-        Debug.WriteLine(ev.MarginBounds.Width);
-        Debug.WriteLine(ev.MarginBounds.Height);
         var barcodeData = _currentProduct.ProductId + " " + _currentProduct.Name + "-" + _currentProduct.Dimension;
-        writer.Write(barcodeData).Save(@"c:\users\muhammad\desktop\11.bmp");
+        writer.Write(barcodeData).Save(@"c:\users\msaleh\desktop\11.bmp", ImageFormat.Bmp);
         return writer.Write(barcodeData);
     }
 
-    private Bitmap GenereateBitMap()
-    {
-        var writer = new BarcodeWriter<PixelData>
-        {
-            Format = BarcodeFormat.CODE_128,
-            Renderer = new PixelDataRenderer(),
-            Options = new ZXing.Common.EncodingOptions()
-            {
-                Width = 812 / 2,
-                Height = 1218 / 2,
-                PureBarcode = false,
-                Margin = 10,
-            },
-        };
-        //writer.Options.Hints[EncodeHintType.DISABLE_ECI] = false;
-
-        var labelData = writer.Write(_currentProduct.ProductId + _currentProduct.Name);
-
-
-        Bitmap bitmap = new(labelData.Width, labelData.Height);
-        BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly, bitmap.PixelFormat);
-
-        byte[] pixelValues = new byte[bitmapData.Stride * bitmapData.Height];
-
-        // Copy pixel data from barcodeData.Pixels to pixelValues
-        Array.Copy(labelData.Pixels, pixelValues, pixelValues.Length);
-
-        // Copy pixelValues to bitmapData.Scan0
-        Marshal.Copy(pixelValues, 0, bitmapData.Scan0, pixelValues.Length);
-
-        bitmap.UnlockBits(bitmapData);
-        _bitmap = bitmap;
-        return bitmap;
-    }
-
-    private void PrintLabel()
-    {
-        PrintDocument document = new();
-        document.PrintPage += (sender, e) =>
-        {
-            e.Graphics?.DrawImage(_bitmap, new Point(0, 0));
-        };
-        document.Print();
-    }
-
-    private void DispayLabel()
-    {
-        pictureBox1.Image = _bitmap;
-    }
-
-    private void dataGridViewProducts_SelectionChanged(object sender, EventArgs e)
-    {
-        if (this._dbContext is null) return;
-        var product = dataGridViewProducts.CurrentRow?.DataBoundItem;
-
-        if (product is Product currentProduct)
-        {
-            _currentProduct = currentProduct;
-            GenereateBitMap();
-            DispayLabel();
-        }
-    }
 }
 
 

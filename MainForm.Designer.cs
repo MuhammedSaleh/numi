@@ -41,11 +41,11 @@ partial class MainForm
         labelProducts = new Label();
         buttonPrint = new Button();
         buttonSave = new Button();
-        pictureBox1 = new PictureBox();
+        pictureBoxBarcode = new PictureBox();
         ((System.ComponentModel.ISupportInitialize)categoryBindingSource).BeginInit();
         ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).BeginInit();
         ((System.ComponentModel.ISupportInitialize)productsBindingSource).BeginInit();
-        ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxBarcode).BeginInit();
         SuspendLayout();
         // 
         // comboBoxCategories
@@ -151,20 +151,20 @@ partial class MainForm
         buttonSave.UseVisualStyleBackColor = true;
         buttonSave.Click += buttonSave_Click;
         // 
-        // pictureBox1
+        // pictureBoxBarcode
         // 
-        pictureBox1.Location = new Point(896, 587);
-        pictureBox1.Name = "pictureBox1";
-        pictureBox1.Size = new Size(317, 85);
-        pictureBox1.TabIndex = 7;
-        pictureBox1.TabStop = false;
+        pictureBoxBarcode.Location = new Point(833, 587);
+        pictureBoxBarcode.Name = "pictureBoxBarcode";
+        pictureBoxBarcode.Size = new Size(380, 128);
+        pictureBoxBarcode.TabIndex = 7;
+        pictureBoxBarcode.TabStop = false;
         // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1343, 749);
-        Controls.Add(pictureBox1);
+        Controls.Add(pictureBoxBarcode);
         Controls.Add(buttonSave);
         Controls.Add(buttonPrint);
         Controls.Add(labelProducts);
@@ -178,7 +178,7 @@ partial class MainForm
         ((System.ComponentModel.ISupportInitialize)categoryBindingSource).EndInit();
         ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).EndInit();
         ((System.ComponentModel.ISupportInitialize)productsBindingSource).EndInit();
-        ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxBarcode).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -198,5 +198,5 @@ partial class MainForm
     private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
     private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
     private DataGridViewTextBoxColumn dimensionDataGridViewTextBoxColumn;
-    private PictureBox pictureBox1;
+    private PictureBox pictureBoxBarcode;
 }
