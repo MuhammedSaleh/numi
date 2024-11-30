@@ -29,6 +29,8 @@ partial class MainForm
     private void InitializeComponent()
     {
         components = new System.ComponentModel.Container();
+        DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
         comboBoxCategories = new ComboBox();
         categoryBindingSource = new BindingSource(components);
         dataGridViewProducts = new DataGridView();
@@ -39,13 +41,15 @@ partial class MainForm
         labelHeader = new Label();
         labelCategories = new Label();
         labelProducts = new Label();
-        buttonPrint = new Button();
-        buttonSave = new Button();
-        pictureBoxBarcode = new PictureBox();
+        buttonPrintBarcode = new Button();
+        pictBxBarcode = new PictureBox();
+        pictBxQrcode = new PictureBox();
+        buttonPrintQrcode = new Button();
         ((System.ComponentModel.ISupportInitialize)categoryBindingSource).BeginInit();
         ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).BeginInit();
         ((System.ComponentModel.ISupportInitialize)productsBindingSource).BeginInit();
-        ((System.ComponentModel.ISupportInitialize)pictureBoxBarcode).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)pictBxBarcode).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)pictBxQrcode).BeginInit();
         SuspendLayout();
         // 
         // comboBoxCategories
@@ -65,14 +69,32 @@ partial class MainForm
         // 
         // dataGridViewProducts
         // 
+        dataGridViewProducts.AllowUserToAddRows = false;
+        dataGridViewProducts.AllowUserToDeleteRows = false;
+        dataGridViewCellStyle1.BackColor = SystemColors.GradientActiveCaption;
+        dataGridViewProducts.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
         dataGridViewProducts.AutoGenerateColumns = false;
         dataGridViewProducts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dataGridViewProducts.BackgroundColor = Color.White;
+        dataGridViewProducts.BorderStyle = BorderStyle.Fixed3D;
+        dataGridViewProducts.CellBorderStyle = DataGridViewCellBorderStyle.None;
+        dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle2.BackColor = SystemColors.Control;
+        dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+        dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
+        dataGridViewCellStyle2.SelectionBackColor = SystemColors.HighlightText;
+        dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+        dataGridViewProducts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
         dataGridViewProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dataGridViewProducts.Columns.AddRange(new DataGridViewColumn[] { nameDataGridViewTextBoxColumn, descriptionDataGridViewTextBoxColumn, dimensionDataGridViewTextBoxColumn });
         dataGridViewProducts.DataSource = productsBindingSource;
         dataGridViewProducts.Location = new Point(44, 179);
         dataGridViewProducts.Name = "dataGridViewProducts";
-        dataGridViewProducts.Size = new Size(1169, 374);
+        dataGridViewProducts.ReadOnly = true;
+        dataGridViewProducts.RowHeadersVisible = false;
+        dataGridViewProducts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        dataGridViewProducts.Size = new Size(830, 348);
         dataGridViewProducts.TabIndex = 1;
         dataGridViewProducts.SelectionChanged += dataGridViewProducts_SelectionChanged;
         // 
@@ -81,18 +103,21 @@ partial class MainForm
         nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
         nameDataGridViewTextBoxColumn.HeaderText = "Name";
         nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+        nameDataGridViewTextBoxColumn.ReadOnly = true;
         // 
         // descriptionDataGridViewTextBoxColumn
         // 
         descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
         descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
         descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
+        descriptionDataGridViewTextBoxColumn.ReadOnly = true;
         // 
         // dimensionDataGridViewTextBoxColumn
         // 
         dimensionDataGridViewTextBoxColumn.DataPropertyName = "Dimension";
         dimensionDataGridViewTextBoxColumn.HeaderText = "Dimension";
         dimensionDataGridViewTextBoxColumn.Name = "dimensionDataGridViewTextBoxColumn";
+        dimensionDataGridViewTextBoxColumn.ReadOnly = true;
         // 
         // productsBindingSource
         // 
@@ -129,44 +154,56 @@ partial class MainForm
         labelProducts.TabIndex = 4;
         labelProducts.Text = "Products";
         // 
-        // buttonPrint
+        // buttonPrintBarcode
         // 
-        buttonPrint.Font = new Font("Segoe UI", 12F);
-        buttonPrint.Location = new Point(179, 587);
-        buttonPrint.Name = "buttonPrint";
-        buttonPrint.Size = new Size(111, 36);
-        buttonPrint.TabIndex = 5;
-        buttonPrint.Text = "Print";
-        buttonPrint.UseVisualStyleBackColor = true;
-        buttonPrint.Click += buttonPrint_Click;
+        buttonPrintBarcode.Font = new Font("Segoe UI", 12F);
+        buttonPrintBarcode.Location = new Point(924, 292);
+        buttonPrintBarcode.Name = "buttonPrintBarcode";
+        buttonPrintBarcode.Size = new Size(111, 36);
+        buttonPrintBarcode.TabIndex = 5;
+        buttonPrintBarcode.Text = "Print";
+        buttonPrintBarcode.UseVisualStyleBackColor = true;
+        buttonPrintBarcode.Click += buttonPrintBarcode_Click;
         // 
-        // buttonSave
+        // pictBxBarcode
         // 
-        buttonSave.Font = new Font("Segoe UI", 12F);
-        buttonSave.Location = new Point(44, 587);
-        buttonSave.Name = "buttonSave";
-        buttonSave.Size = new Size(111, 36);
-        buttonSave.TabIndex = 6;
-        buttonSave.Text = "Save";
-        buttonSave.UseVisualStyleBackColor = true;
-        buttonSave.Click += buttonSave_Click;
+        pictBxBarcode.BackColor = Color.White;
+        pictBxBarcode.Location = new Point(924, 179);
+        pictBxBarcode.Name = "pictBxBarcode";
+        pictBxBarcode.Size = new Size(387, 107);
+        pictBxBarcode.SizeMode = PictureBoxSizeMode.CenterImage;
+        pictBxBarcode.TabIndex = 7;
+        pictBxBarcode.TabStop = false;
         // 
-        // pictureBoxBarcode
+        // pictBxQrcode
         // 
-        pictureBoxBarcode.Location = new Point(833, 587);
-        pictureBoxBarcode.Name = "pictureBoxBarcode";
-        pictureBoxBarcode.Size = new Size(380, 128);
-        pictureBoxBarcode.TabIndex = 7;
-        pictureBoxBarcode.TabStop = false;
+        pictBxQrcode.BackColor = Color.White;
+        pictBxQrcode.Location = new Point(924, 401);
+        pictBxQrcode.Name = "pictBxQrcode";
+        pictBxQrcode.Size = new Size(104, 104);
+        pictBxQrcode.TabIndex = 8;
+        pictBxQrcode.TabStop = false;
+        // 
+        // buttonPrintQrcode
+        // 
+        buttonPrintQrcode.Font = new Font("Segoe UI", 12F);
+        buttonPrintQrcode.Location = new Point(924, 511);
+        buttonPrintQrcode.Name = "buttonPrintQrcode";
+        buttonPrintQrcode.Size = new Size(111, 36);
+        buttonPrintQrcode.TabIndex = 9;
+        buttonPrintQrcode.Text = "Print";
+        buttonPrintQrcode.UseVisualStyleBackColor = true;
+        buttonPrintQrcode.Click += buttonPrintQrcode_Click;
         // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1343, 749);
-        Controls.Add(pictureBoxBarcode);
-        Controls.Add(buttonSave);
-        Controls.Add(buttonPrint);
+        Controls.Add(buttonPrintQrcode);
+        Controls.Add(pictBxQrcode);
+        Controls.Add(pictBxBarcode);
+        Controls.Add(buttonPrintBarcode);
         Controls.Add(labelProducts);
         Controls.Add(labelCategories);
         Controls.Add(labelHeader);
@@ -174,11 +211,11 @@ partial class MainForm
         Controls.Add(comboBoxCategories);
         Name = "MainForm";
         Text = "Numi Products";
-        Load += MainForm_Load;
         ((System.ComponentModel.ISupportInitialize)categoryBindingSource).EndInit();
         ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).EndInit();
         ((System.ComponentModel.ISupportInitialize)productsBindingSource).EndInit();
-        ((System.ComponentModel.ISupportInitialize)pictureBoxBarcode).EndInit();
+        ((System.ComponentModel.ISupportInitialize)pictBxBarcode).EndInit();
+        ((System.ComponentModel.ISupportInitialize)pictBxQrcode).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -193,10 +230,11 @@ partial class MainForm
     private Label labelHeader;
     private Label labelCategories;
     private Label labelProducts;
-    private Button buttonPrint;
-    private Button buttonSave;
+    private Button buttonPrintBarcode;
     private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
     private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
     private DataGridViewTextBoxColumn dimensionDataGridViewTextBoxColumn;
-    private PictureBox pictureBoxBarcode;
+    private PictureBox pictBxBarcode;
+    private PictureBox pictBxQrcode;
+    private Button buttonPrintQrcode;
 }

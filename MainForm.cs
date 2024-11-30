@@ -2,19 +2,16 @@ using Microsoft.EntityFrameworkCore;
 using numi.src.domain.Data;
 using numi.src.domain.Models;
 using System.Diagnostics;
-using System.Drawing.Imaging;
 using System.Drawing.Printing;
-using System.Runtime.InteropServices;
 using ZXing;
-using ZXing.Rendering;
+using ZXing.Common;
 using ZXing.Windows.Compatibility;
 
 namespace numi;
 public partial class MainForm : Form
 {
     private AppDbContext? _dbContext;
-    private Bitmap _bitmap;
-    private Product _currentProduct;
+    private Product? _currentProduct;
     public MainForm()
     {
         InitializeComponent();
@@ -39,12 +36,6 @@ public partial class MainForm : Form
         _dbContext = null;
     }
 
-    private void MainForm_Load(object sender, EventArgs e)
-    {
-
-
-    }
-
     private void comboBoxCategories_SelectedIndexChanged(object sender, EventArgs e)
     {
         UpdateDataGridViewProducts();
@@ -59,13 +50,6 @@ public partial class MainForm : Form
         }
     }
 
-    private void buttonSave_Click(object sender, EventArgs e)
-    {
-        this._dbContext?.SaveChanges();
-        comboBoxCategories.Refresh();
-        dataGridViewProducts.Refresh();
-    }
-
     private void dataGridViewProducts_SelectionChanged(object sender, EventArgs e)
     {
         if (this._dbContext is null) return;
@@ -74,80 +58,89 @@ public partial class MainForm : Form
         if (product is Product currentProduct)
         {
             _currentProduct = currentProduct;
-            _bitmap = GetBitmap();
-            pictureBoxBarcode.Image = _bitmap;
+            DisplayBarcode();
+            DisplayQrcode();
+
         }
     }
 
-    private void buttonPrint_Click(object sender, EventArgs e)
+    private void DisplayBarcode()
     {
+        if (_currentProduct is null) return;
+
+        string barcodeText = _currentProduct.ProductId + "-" + _currentProduct.Name + "-" + _currentProduct.Dimension;
+        var width = pictBxBarcode.Width * 90 / 100;
+        var height = pictBxBarcode.Height * 90 / 100;
+
+        Bitmap bitmap = GetBarcodeBitmap(barcodeText, BarcodeFormat.CODE_128, width, height);
+        pictBxBarcode.SizeMode = PictureBoxSizeMode.CenterImage;
+        pictBxBarcode.Image = bitmap;
+    }
+
+    private void DisplayQrcode()
+    {
+        if (_currentProduct is null) return;
+
+        string barcodeText = _currentProduct.ProductId + "-" + _currentProduct.Name + "-" + _currentProduct.Dimension;
+        var width = pictBxBarcode.Width;
+        var height = pictBxBarcode.Height;
+
+        Bitmap bitmap = GetBarcodeBitmap(barcodeText, BarcodeFormat.QR_CODE, width, height);
+        pictBxQrcode.SizeMode = PictureBoxSizeMode.CenterImage;
+        pictBxQrcode.Image = bitmap;
+    }
+
+    private void buttonPrintBarcode_Click(object sender, EventArgs e)
+    {
+        PrintBarcode(BarcodeFormat.CODE_128);
+    }
+    private void buttonPrintQrcode_Click(object sender, EventArgs e)
+    {
+        PrintBarcode(BarcodeFormat.QR_CODE);
+    }
+
+    private void PrintBarcode(BarcodeFormat barcodeFromat)
+    {
+        if (_currentProduct is null) return;
+
+        string barcodeData = _currentProduct.ProductId + " " + _currentProduct.Name + " " + _currentProduct.Dimension;
         PrintDocument printDocument = new()
         {
-            DocumentName = _currentProduct.ProductId + " " + _currentProduct.Name + " " + _currentProduct.Dimension
+            DocumentName = barcodeData,
         };
 
         printDocument.PrintPage += (sender, ev) =>
         {
-            ev.PageSettings.PaperSize = printDocument.DefaultPageSettings.PaperSize;
-            ev.Graphics?.DrawImage(_bitmap, 0, 0);
+            int printerResolution = ev.PageSettings.PrinterResolution.X;
+            int width = ev.PageBounds.Width * printerResolution / 100;
+            int height = ev.PageBounds.Height * printerResolution / 100;
+
+            string barcodeString = _currentProduct.ProductId + "-" + _currentProduct.Name + "-" + _currentProduct.Dimension;
+            Bitmap bitmap = GetBarcodeBitmap(barcodeString, barcodeFromat, width, height);
+            ev.Graphics?.DrawImage(bitmap, 0, 0);
         };
         printDocument.Print();
     }
 
-    private Bitmap GetBitmap()
+
+    private Bitmap GetBarcodeBitmap(string barcodText, BarcodeFormat format, int width, int height)
     {
-        BarcodeWriter writer = new()
+        var writer = new BarcodeWriter()
         {
-            Format = BarcodeFormat.CODE_128,
-            //Renderer = new BitmapRenderer(),
-            Options = new()
+            Format = format,
+            Options = new EncodingOptions
             {
-                Width = 100,
-                Height = 100,
-                Margin = 20,
+                Width = width,
+                Height = height,
                 NoPadding = true,
-                PureBarcode = false,
-            }
+            },
         };
-        var barcodeData = _currentProduct.ProductId + " " + _currentProduct.Name + "-" + _currentProduct.Dimension;
-        writer.Write(barcodeData).Save(@"c:\users\msaleh\desktop\11.bmp", ImageFormat.Bmp);
-        return writer.Write(barcodeData);
+        return writer.Write(barcodText);
     }
-
 }
-
 
 /*
  * publishing self contained project
  * dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
  * dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o "C:\PublishOutput"
- * 
- * 
- * Suggest print method
- * private void PrintBarcode()
-{
-    PrintDocument printDoc = new PrintDocument();
-    printDoc.PrintPage += PrintPageHandler;
-    printDoc.Print();
-}
-
-private void PrintPageHandler(object sender, PrintPageEventArgs e)
-{
-    // Assuming you have the barcode image in a Bitmap object
-    Bitmap barcodeImage = (Bitmap)pictureBox1.Image;
-
-    // Calculate the scaling factor to fit the barcode image on the page
-    float scaleFactor = Math.Min(e.MarginBounds.Width / barcodeImage.Width, e.MarginBounds.Height / barcodeImage.Height);
-
-    // Create a scaled version of the barcode image
-    Bitmap scaledImage = new Bitmap((int)(barcodeImage.Width * scaleFactor), (int)(barcodeImage.Height * scaleFactor));
-    using (Graphics g = Graphics.FromImage(scaledImage))
-    {
-        g.DrawImage(barcodeImage, 0, 0, scaledImage.Width, scaledImage.Height);
-    }
-
-    // Draw the scaled image on the print page
-    e.Graphics.DrawImage(scaledImage, e.MarginBounds.Left, e.MarginBounds.Top);
-}
- * 
  */
