@@ -10,7 +10,7 @@ using ZXing.Windows.Compatibility;
 namespace numi;
 public partial class MainForm : Form
 {
-    private AppDbContext? _dbContext;
+    private AppDbContext? _appDBContext;
     private Product? _currentProduct;
     public MainForm()
     {
@@ -20,20 +20,20 @@ public partial class MainForm : Form
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
-        _dbContext = new AppDbContext();
+        _appDBContext = new AppDbContext();
 
         //_dbContext.Database.EnsureDeleted();
-        _dbContext.Database.EnsureCreated();
-        _dbContext.Categories.Load();
-        this.categoryBindingSource.DataSource = _dbContext.Categories.Local.ToBindingList();
+        _appDBContext.Database.EnsureCreated();
+        _appDBContext.Categories.Load();
+        this.categoryBindingSource.DataSource = _appDBContext.Categories.Local.ToBindingList();
         UpdateDataGridViewProducts();
     }
 
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);
-        _dbContext?.Dispose();
-        _dbContext = null;
+        _appDBContext?.Dispose();
+        _appDBContext = null;
     }
 
     private void comboBoxCategories_SelectedIndexChanged(object sender, EventArgs e)
@@ -46,13 +46,13 @@ public partial class MainForm : Form
         var selectedItem = comboBoxCategories.SelectedItem;
         if (selectedItem is Category category)
         {
-            this._dbContext?.Entry(category).Collection(e => e.Products).Load();
+            this._appDBContext?.Entry(category).Collection(e => e.Products).Load();
         }
     }
 
     private void dataGridViewProducts_SelectionChanged(object sender, EventArgs e)
     {
-        if (this._dbContext is null) return;
+        if (this._appDBContext is null) return;
         var product = dataGridViewProducts.CurrentRow?.DataBoundItem;
 
         if (product is Product currentProduct)
@@ -143,11 +143,22 @@ public partial class MainForm : Form
         var currentCategory = comboBoxCategories.SelectedItem as Category;
         if (currentCategory is null) return;
 
-        Form newProductForm = new NewProductForm
+        var newProductForm = new NewProductForm
         {
-            Category = currentCategory!.Name
+            Category = currentCategory!.Name,
         };
-        newProductForm.ShowDialog();
+
+        var dialogResult = newProductForm.ShowDialog();
+        if (dialogResult == DialogResult.Cancel) return;
+        if (newProductForm.NewProduct is null) return;
+        AddNewProduct(newProductForm.NewProduct);
+    }
+
+    private void AddNewProduct(Product newProduct)
+    {
+        using var context = new AppDbContext();
+        context.Products.Add(newProduct);
+        context.SaveChanges();
     }
 }
 

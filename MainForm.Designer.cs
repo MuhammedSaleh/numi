@@ -36,9 +36,6 @@ partial class MainForm
         comboBoxCategories = new ComboBox();
         categoryBindingSource = new BindingSource(components);
         dataGridViewProducts = new DataGridView();
-        nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-        descriptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-        dimensionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
         productsBindingSource = new BindingSource(components);
         labelHeader = new Label();
         labelCategories = new Label();
@@ -51,6 +48,10 @@ partial class MainForm
         button1 = new Button();
         buttonDelete = new Button();
         button2 = new Button();
+        ProductId = new DataGridViewTextBoxColumn();
+        nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+        descriptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+        dimensionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
         ((System.ComponentModel.ISupportInitialize)categoryBindingSource).BeginInit();
         ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).BeginInit();
         ((System.ComponentModel.ISupportInitialize)productsBindingSource).BeginInit();
@@ -96,7 +97,7 @@ partial class MainForm
         dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
         dataGridViewProducts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
         dataGridViewProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-        dataGridViewProducts.Columns.AddRange(new DataGridViewColumn[] { nameDataGridViewTextBoxColumn, descriptionDataGridViewTextBoxColumn, dimensionDataGridViewTextBoxColumn });
+        dataGridViewProducts.Columns.AddRange(new DataGridViewColumn[] { ProductId, nameDataGridViewTextBoxColumn, descriptionDataGridViewTextBoxColumn, dimensionDataGridViewTextBoxColumn });
         dataGridViewProducts.DataSource = productsBindingSource;
         dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle3.BackColor = SystemColors.Window;
@@ -117,27 +118,6 @@ partial class MainForm
         dataGridViewProducts.Size = new Size(674, 420);
         dataGridViewProducts.TabIndex = 1;
         dataGridViewProducts.SelectionChanged += dataGridViewProducts_SelectionChanged;
-        // 
-        // nameDataGridViewTextBoxColumn
-        // 
-        nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-        nameDataGridViewTextBoxColumn.HeaderText = "Name";
-        nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-        nameDataGridViewTextBoxColumn.ReadOnly = true;
-        // 
-        // descriptionDataGridViewTextBoxColumn
-        // 
-        descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
-        descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
-        descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
-        descriptionDataGridViewTextBoxColumn.ReadOnly = true;
-        // 
-        // dimensionDataGridViewTextBoxColumn
-        // 
-        dimensionDataGridViewTextBoxColumn.DataPropertyName = "Dimension";
-        dimensionDataGridViewTextBoxColumn.HeaderText = "Dimension";
-        dimensionDataGridViewTextBoxColumn.Name = "dimensionDataGridViewTextBoxColumn";
-        dimensionDataGridViewTextBoxColumn.ReadOnly = true;
         // 
         // productsBindingSource
         // 
@@ -269,6 +249,34 @@ partial class MainForm
         button2.Text = "Remove";
         button2.UseVisualStyleBackColor = true;
         // 
+        // ProductId
+        // 
+        ProductId.DataPropertyName = "ProductId";
+        ProductId.HeaderText = "ProductId";
+        ProductId.Name = "ProductId";
+        ProductId.ReadOnly = true;
+        // 
+        // nameDataGridViewTextBoxColumn
+        // 
+        nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+        nameDataGridViewTextBoxColumn.HeaderText = "Name";
+        nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+        nameDataGridViewTextBoxColumn.ReadOnly = true;
+        // 
+        // descriptionDataGridViewTextBoxColumn
+        // 
+        descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
+        descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
+        descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
+        descriptionDataGridViewTextBoxColumn.ReadOnly = true;
+        // 
+        // dimensionDataGridViewTextBoxColumn
+        // 
+        dimensionDataGridViewTextBoxColumn.DataPropertyName = "Dimension";
+        dimensionDataGridViewTextBoxColumn.HeaderText = "Dimension";
+        dimensionDataGridViewTextBoxColumn.Name = "dimensionDataGridViewTextBoxColumn";
+        dimensionDataGridViewTextBoxColumn.ReadOnly = true;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
@@ -306,9 +314,6 @@ partial class MainForm
     private Label labelCategories;
     private Label labelProducts;
     private Button buttonPrintBarcode;
-    private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
-    private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
-    private DataGridViewTextBoxColumn dimensionDataGridViewTextBoxColumn;
     private PictureBox pictBxBarcode;
     private PictureBox pictBxQrcode;
     private Button buttonPrintQrcode;
@@ -316,4 +321,9 @@ partial class MainForm
     private Button button1;
     private Button buttonDelete;
     private Button button2;
+    private DataGridViewTextBoxColumn productIdDataGridViewTextBoxColumn;
+    private DataGridViewTextBoxColumn ProductId;
+    private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
+    private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
+    private DataGridViewTextBoxColumn dimensionDataGridViewTextBoxColumn;
 }
