@@ -81,7 +81,7 @@ public partial class MainForm : Form
     {
         if (_currentProduct is null) return;
 
-        string barcodeText = _currentProduct.ProductId + "-" + _currentProduct.Name + "-" + _currentProduct.Dimension;
+        string barcodeText = _currentProduct.Name + "-" + _currentProduct.Dimension;
         var width = pictBxBarcode.Width;
         var height = pictBxBarcode.Height;
 
@@ -140,7 +140,14 @@ public partial class MainForm : Form
 
     private void button1_Click(object sender, EventArgs e)
     {
+        var currentCategory = comboBoxCategories.SelectedItem as Category;
+        if (currentCategory is null) return;
 
+        Form newProductForm = new NewProductForm
+        {
+            Category = currentCategory!.Name
+        };
+        newProductForm.ShowDialog();
     }
 }
 
