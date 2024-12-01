@@ -137,6 +137,11 @@ public partial class MainForm : Form
         };
         return writer.Write(barcodText);
     }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+
+    }
 }
 
 /*
