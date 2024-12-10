@@ -36,6 +36,10 @@ partial class MainForm
         comboBoxCategories = new ComboBox();
         categoryBindingSource = new BindingSource(components);
         dataGridViewProducts = new DataGridView();
+        ProductId = new DataGridViewTextBoxColumn();
+        nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+        descriptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+        dimensionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
         productsBindingSource = new BindingSource(components);
         labelHeader = new Label();
         labelCategories = new Label();
@@ -48,10 +52,7 @@ partial class MainForm
         button1 = new Button();
         buttonDelete = new Button();
         button2 = new Button();
-        ProductId = new DataGridViewTextBoxColumn();
-        nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-        descriptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-        dimensionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+        buttonExportCSV = new Button();
         ((System.ComponentModel.ISupportInitialize)categoryBindingSource).BeginInit();
         ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).BeginInit();
         ((System.ComponentModel.ISupportInitialize)productsBindingSource).BeginInit();
@@ -108,6 +109,7 @@ partial class MainForm
         dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
         dataGridViewProducts.DefaultCellStyle = dataGridViewCellStyle3;
         dataGridViewProducts.Location = new Point(44, 201);
+        dataGridViewProducts.MultiSelect = false;
         dataGridViewProducts.Name = "dataGridViewProducts";
         dataGridViewProducts.ReadOnly = true;
         dataGridViewProducts.RowHeadersVisible = false;
@@ -118,6 +120,34 @@ partial class MainForm
         dataGridViewProducts.Size = new Size(674, 420);
         dataGridViewProducts.TabIndex = 1;
         dataGridViewProducts.SelectionChanged += dataGridViewProducts_SelectionChanged;
+        // 
+        // ProductId
+        // 
+        ProductId.DataPropertyName = "ProductId";
+        ProductId.HeaderText = "ProductId";
+        ProductId.Name = "ProductId";
+        ProductId.ReadOnly = true;
+        // 
+        // nameDataGridViewTextBoxColumn
+        // 
+        nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+        nameDataGridViewTextBoxColumn.HeaderText = "Name";
+        nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+        nameDataGridViewTextBoxColumn.ReadOnly = true;
+        // 
+        // descriptionDataGridViewTextBoxColumn
+        // 
+        descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
+        descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
+        descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
+        descriptionDataGridViewTextBoxColumn.ReadOnly = true;
+        // 
+        // dimensionDataGridViewTextBoxColumn
+        // 
+        dimensionDataGridViewTextBoxColumn.DataPropertyName = "Dimension";
+        dimensionDataGridViewTextBoxColumn.HeaderText = "Dimension";
+        dimensionDataGridViewTextBoxColumn.Name = "dimensionDataGridViewTextBoxColumn";
+        dimensionDataGridViewTextBoxColumn.ReadOnly = true;
         // 
         // productsBindingSource
         // 
@@ -225,7 +255,7 @@ partial class MainForm
         button1.TabIndex = 12;
         button1.Text = "Add";
         button1.UseVisualStyleBackColor = true;
-        button1.Click += button1_Click;
+        button1.Click += buttonAdd_Click;
         // 
         // buttonDelete
         // 
@@ -248,40 +278,26 @@ partial class MainForm
         button2.TabIndex = 14;
         button2.Text = "Remove";
         button2.UseVisualStyleBackColor = true;
+        button2.Click += buttonRemove;
         // 
-        // ProductId
+        // buttonExportCSV
         // 
-        ProductId.DataPropertyName = "ProductId";
-        ProductId.HeaderText = "ProductId";
-        ProductId.Name = "ProductId";
-        ProductId.ReadOnly = true;
-        // 
-        // nameDataGridViewTextBoxColumn
-        // 
-        nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-        nameDataGridViewTextBoxColumn.HeaderText = "Name";
-        nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-        nameDataGridViewTextBoxColumn.ReadOnly = true;
-        // 
-        // descriptionDataGridViewTextBoxColumn
-        // 
-        descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
-        descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
-        descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
-        descriptionDataGridViewTextBoxColumn.ReadOnly = true;
-        // 
-        // dimensionDataGridViewTextBoxColumn
-        // 
-        dimensionDataGridViewTextBoxColumn.DataPropertyName = "Dimension";
-        dimensionDataGridViewTextBoxColumn.HeaderText = "Dimension";
-        dimensionDataGridViewTextBoxColumn.Name = "dimensionDataGridViewTextBoxColumn";
-        dimensionDataGridViewTextBoxColumn.ReadOnly = true;
+        buttonExportCSV.Font = new Font("Segoe UI", 14F);
+        buttonExportCSV.Location = new Point(395, 643);
+        buttonExportCSV.Margin = new Padding(3, 3, 10, 3);
+        buttonExportCSV.Name = "buttonExportCSV";
+        buttonExportCSV.Size = new Size(127, 36);
+        buttonExportCSV.TabIndex = 15;
+        buttonExportCSV.Text = "Export CSV";
+        buttonExportCSV.UseVisualStyleBackColor = true;
+        buttonExportCSV.Click += buttonExportCSV_Click;
         // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1343, 749);
+        Controls.Add(buttonExportCSV);
         Controls.Add(button2);
         Controls.Add(buttonDelete);
         Controls.Add(button1);
@@ -326,4 +342,5 @@ partial class MainForm
     private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
     private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
     private DataGridViewTextBoxColumn dimensionDataGridViewTextBoxColumn;
+    private Button buttonExportCSV;
 }

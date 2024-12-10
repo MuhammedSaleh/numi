@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using numi.src.domain.Data;
 using numi.src.domain.Models;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Printing;
+using System.Text;
 using ZXing;
 using ZXing.Common;
 using ZXing.Windows.Compatibility;
@@ -10,8 +12,6 @@ using ZXing.Windows.Compatibility;
 namespace numi;
 public partial class MainForm : Form
 {
-    private AppDbContext? _appDBContext;
-    private Product? _currentProduct;
     public MainForm()
     {
         InitializeComponent();
@@ -20,20 +20,13 @@ public partial class MainForm : Form
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
-        _appDBContext = new AppDbContext();
+        using var context = new AppDbContext(new DbContextOptions<AppDbContext>());
 
-        //_dbContext.Database.EnsureDeleted();
-        _appDBContext.Database.EnsureCreated();
-        _appDBContext.Categories.Load();
-        this.categoryBindingSource.DataSource = _appDBContext.Categories.Local.ToBindingList();
+        context.Database.EnsureDeleted();
+        context.Database.EnsureCreated();
+        context.Categories.Load();
+        categoryBindingSource.DataSource = context.Categories.Local.ToBindingList();
         UpdateDataGridViewProducts();
-    }
-
-    protected override void OnClosed(EventArgs e)
-    {
-        base.OnClosed(e);
-        _appDBContext?.Dispose();
-        _appDBContext = null;
     }
 
     private void comboBoxCategories_SelectedIndexChanged(object sender, EventArgs e)
@@ -46,42 +39,43 @@ public partial class MainForm : Form
         var selectedItem = comboBoxCategories.SelectedItem;
         if (selectedItem is Category category)
         {
-            this._appDBContext?.Entry(category).Collection(e => e.Products).Load();
+            //this._appDBContext?.Entry(category).Collection(e => e.Products).Load();
+            dataGridViewProducts.Rows.Clear();
+            using var context = new AppDbContext(new DbContextOptions<AppDbContext>());
+            context.Entry(category).Collection(e => e.Products).Load();
         }
     }
 
     private void dataGridViewProducts_SelectionChanged(object sender, EventArgs e)
     {
-        if (this._appDBContext is null) return;
         var product = dataGridViewProducts.CurrentRow?.DataBoundItem;
 
         if (product is Product currentProduct)
         {
-            _currentProduct = currentProduct;
-            DisplayBarcode();
-            DisplayQrcode();
+            DisplayBarcode(currentProduct);
+            DisplayQrcode(currentProduct);
 
         }
     }
 
-    private void DisplayBarcode()
+    private void DisplayBarcode(Product product)
     {
-        if (_currentProduct is null) return;
+        if (product is null) return;
 
-        string barcodeText = _currentProduct.ProductId + "-" + _currentProduct.Name + "-" + _currentProduct.Dimension;
-        var width = pictBxBarcode.Width * 90 / 100;
-        var height = pictBxBarcode.Height * 90 / 100;
+        string barcodeText = product.ProductId + "-" + product.Name + "-" + product.Dimension;
+        var width = 100;
+        var height = 100;
 
         Bitmap bitmap = GetBarcodeBitmap(barcodeText, BarcodeFormat.CODE_128, width, height);
         pictBxBarcode.SizeMode = PictureBoxSizeMode.CenterImage;
         pictBxBarcode.Image = bitmap;
     }
 
-    private void DisplayQrcode()
+    private void DisplayQrcode(Product product)
     {
-        if (_currentProduct is null) return;
+        if (product is null) return;
 
-        string barcodeText = _currentProduct.Name + "-" + _currentProduct.Dimension;
+        string barcodeText = product.Name + "-" + product.Dimension;
         var width = pictBxBarcode.Width;
         var height = pictBxBarcode.Height;
 
@@ -92,18 +86,18 @@ public partial class MainForm : Form
 
     private void buttonPrintBarcode_Click(object sender, EventArgs e)
     {
-        PrintBarcode(BarcodeFormat.CODE_128);
+        if (dataGridViewProducts.CurrentRow?.DataBoundItem is not Product product) return;
+        PrintBarcode(product, BarcodeFormat.CODE_128);
     }
     private void buttonPrintQrcode_Click(object sender, EventArgs e)
     {
-        PrintBarcode(BarcodeFormat.QR_CODE);
+        if (dataGridViewProducts.CurrentRow?.DataBoundItem is not Product product) return;
+        PrintBarcode(product, BarcodeFormat.QR_CODE);
     }
 
-    private void PrintBarcode(BarcodeFormat barcodeFromat)
+    private void PrintBarcode(Product product, BarcodeFormat barcodeFromat)
     {
-        if (_currentProduct is null) return;
-
-        string barcodeData = _currentProduct.ProductId + " " + _currentProduct.Name + " " + _currentProduct.Dimension;
+        string barcodeData = product.ProductId + " " + product.Name + " " + product.Dimension;
         PrintDocument printDocument = new()
         {
             DocumentName = barcodeData,
@@ -111,17 +105,11 @@ public partial class MainForm : Form
 
         printDocument.PrintPage += (sender, ev) =>
         {
-            int printerResolution = ev.PageSettings.PrinterResolution.X;
-            int width = ev.PageBounds.Width * printerResolution / 100;
-            int height = ev.PageBounds.Height * printerResolution / 100;
-
-            string barcodeString = _currentProduct.ProductId + "-" + _currentProduct.Name + "-" + _currentProduct.Dimension;
-            Bitmap bitmap = GetBarcodeBitmap(barcodeString, barcodeFromat, width, height);
-            ev.Graphics?.DrawImage(bitmap, 0, 0);
+            string barcodeString = product.ProductId + "-" + product.Name + "-" + product.Dimension;
+            Bitmap bitmap = GetBarcodeBitmap(barcodeString, barcodeFromat, 100, 100);
         };
         printDocument.Print();
     }
-
 
     private Bitmap GetBarcodeBitmap(string barcodText, BarcodeFormat format, int width, int height)
     {
@@ -138,14 +126,14 @@ public partial class MainForm : Form
         return writer.Write(barcodText);
     }
 
-    private void button1_Click(object sender, EventArgs e)
+    private void buttonAdd_Click(object sender, EventArgs e)
     {
         var currentCategory = comboBoxCategories.SelectedItem as Category;
         if (currentCategory is null) return;
 
         var newProductForm = new NewProductForm
         {
-            Category = currentCategory!.Name,
+            Category = currentCategory
         };
 
         var dialogResult = newProductForm.ShowDialog();
@@ -156,9 +144,61 @@ public partial class MainForm : Form
 
     private void AddNewProduct(Product newProduct)
     {
-        using var context = new AppDbContext();
-        context.Products.Add(newProduct);
+        using (var context = new AppDbContext(new DbContextOptions<AppDbContext>()))
+        {
+            context.Products.Add(newProduct);
+            var entries = context.SaveChanges();
+            if (entries == 0) return;
+            Debug.WriteLine(entries);
+            int newItemIdex = productsBindingSource.Add(newProduct);
+            dataGridViewProducts.Rows[newItemIdex].Selected = true;
+        }
+    }
+
+    private void ExportToCSVFile()
+    {
+        using var context = new AppDbContext(new DbContextOptions<AppDbContext>());
+        var products = context.Products.ToList();
+
+        StringBuilder stringBuilder = new();
+        stringBuilder.AppendLine("ProductType,ProductFamily,ProductId,Description,Width,Lenght,Height");
+        foreach (var product in products)
+        {
+            stringBuilder.Append("Mattress,");
+            stringBuilder.Append($"{product.Name},");
+            stringBuilder.Append($"{product.ProductId},");
+            stringBuilder.Append($"{product.Description},");
+            stringBuilder.Append($"{product.Width},");
+            stringBuilder.Append($"{product.Length},");
+            stringBuilder.Append($"{product.Height}");
+            stringBuilder.AppendLine();
+        }
+        File.WriteAllText(@"c:\users\msaleh\desktop\NumiProducts.csv", stringBuilder.ToString());
+    }
+
+    private void buttonRemove(object sender, EventArgs e)
+    {
+        if (dataGridViewProducts.CurrentRow?.DataBoundItem is not Product product) return;
+        int idx = dataGridViewProducts.CurrentRow.Index;
+
+        using var context = new AppDbContext(new DbContextOptions<AppDbContext>());
+        context.Products.Remove(product);
         context.SaveChanges();
+        productsBindingSource.Remove(product);
+
+        if (idx == 0) return;
+        dataGridViewProducts.Rows[idx - 1].Selected = true;
+    }
+
+    private void buttonExportCSV_Click(object sender, EventArgs e)
+    {
+        ExportToCSVFile();
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        base.OnClosing(e);
+        dataGridViewProducts.DataSource = null;
     }
 }
 
