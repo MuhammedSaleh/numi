@@ -155,7 +155,7 @@ public partial class MainForm : Form
         }
     }
 
-    private void ExportToCSVFile()
+    private void ExportToCSVFile(string path)
     {
         using var context = new AppDbContext(new DbContextOptions<AppDbContext>());
         var products = context.Products.ToList();
@@ -173,7 +173,7 @@ public partial class MainForm : Form
             stringBuilder.Append($"{product.Height}");
             stringBuilder.AppendLine();
         }
-        File.WriteAllText(@"c:\users\msaleh\desktop\NumiProducts.csv", stringBuilder.ToString());
+        File.WriteAllText(path, stringBuilder.ToString());
     }
 
     private void buttonRemove(object sender, EventArgs e)
@@ -192,7 +192,17 @@ public partial class MainForm : Form
 
     private void buttonExportCSV_Click(object sender, EventArgs e)
     {
-        ExportToCSVFile();
+        string filter = "csv|*.csv";
+        SaveFileDialog saveFileDialog = new()
+        {
+            Filter = filter,
+            Title = "Save products as csv file"
+        };
+
+        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            ExportToCSVFile(saveFileDialog.FileName);
+        }
     }
 
     protected override void OnClosing(CancelEventArgs e)
