@@ -18,12 +18,7 @@ public partial class NewProductForm : Form
     private ErrorProvider errorProvider = new();
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public string Category
-    {
-        get
-        { return labelProductCategory.Text; }
-        set { labelProductCategory.Text = value; }
-    }
+    public Category Category { get; set; } = default!;
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public Product? NewProduct { get; set; }
@@ -45,7 +40,7 @@ public partial class NewProductForm : Form
 
         NewProduct = new()
         {
-            CategoryId = Category,
+            CategoryId = Category.CategoryId,
             ProductId = textBoxtId.Text,
             Name = textBoxtName.Text,
             Description = textBoxDescription.Text,
@@ -53,7 +48,8 @@ public partial class NewProductForm : Form
             Length = int.Parse(textBoxLength.Text),
             Height = int.Parse(textBoxHeight.Text),
         };
-        this.Close();
+        DialogResult = DialogResult.OK;
+        Close();
     }
 
     private bool ValidateDimension()
