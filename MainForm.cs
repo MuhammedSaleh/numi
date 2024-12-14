@@ -106,7 +106,8 @@ public partial class MainForm : Form
         printDocument.PrintPage += (sender, ev) =>
         {
             string barcodeString = product.ProductId + "-" + product.Name + "-" + product.Dimension;
-            Bitmap bitmap = GetBarcodeBitmap(barcodeString, barcodeFromat, 100, 100);
+            Bitmap bitmap = GetBarcodeBitmap(barcodeString, barcodeFromat, 100, 50);
+            ev.Graphics?.DrawImage(bitmap, 0, 20);
         };
         printDocument.Print();
     }
