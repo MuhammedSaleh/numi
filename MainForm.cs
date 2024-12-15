@@ -22,7 +22,7 @@ public partial class MainForm : Form
         base.OnLoad(e);
         using var context = new AppDbContext(new DbContextOptions<AppDbContext>());
 
-        context.Database.EnsureDeleted();
+        //context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
         context.Categories.Load();
         categoryBindingSource.DataSource = context.Categories.Local.ToBindingList();
@@ -62,9 +62,9 @@ public partial class MainForm : Form
     {
         if (product is null) return;
 
-        string barcodeText = product.ProductId + "-" + product.Name + "-" + product.Dimension;
-        var width = 100;
-        var height = 100;
+        string barcodeText = product.ProductId;// + "-" + product.Name + "-" + product.Dimension;
+        var width = 350;
+        var height = 80;
 
         Bitmap bitmap = GetBarcodeBitmap(barcodeText, BarcodeFormat.CODE_128, width, height);
         pictBxBarcode.SizeMode = PictureBoxSizeMode.CenterImage;
@@ -97,7 +97,7 @@ public partial class MainForm : Form
 
     private void PrintBarcode(Product product, BarcodeFormat barcodeFromat)
     {
-        string barcodeData = product.ProductId + " " + product.Name + " " + product.Dimension;
+        string barcodeData = product.ProductId; // + " " + product.Name + " " + product.Dimension;
         PrintDocument printDocument = new()
         {
             DocumentName = barcodeData,
@@ -106,7 +106,7 @@ public partial class MainForm : Form
         printDocument.PrintPage += (sender, ev) =>
         {
             string barcodeString = product.ProductId + "-" + product.Name + "-" + product.Dimension;
-            Bitmap bitmap = GetBarcodeBitmap(barcodeString, barcodeFromat, 100, 50);
+            Bitmap bitmap = GetBarcodeBitmap(barcodeString, barcodeFromat, 100, 350);
             ev.Graphics?.DrawImage(bitmap, 0, 20);
         };
         printDocument.Print();
@@ -156,7 +156,7 @@ public partial class MainForm : Form
         }
     }
 
-    private void ExportToCSVFile(string path)
+    private void ExportToCSVFile2(string path)
     {
         using var context = new AppDbContext(new DbContextOptions<AppDbContext>());
         var products = context.Products.ToList();
@@ -176,6 +176,30 @@ public partial class MainForm : Form
         }
         File.WriteAllText(path, stringBuilder.ToString());
     }
+
+    private void ExportToCSVFile(string path)
+    {
+        using var context = new AppDbContext(new DbContextOptions<AppDbContext>());
+        var products = context.Products.ToList();
+
+        StringBuilder stringBuilder = new();
+        stringBuilder.AppendLine("name;code;category;brand;cost;price;unit;stock_alert,note");
+        foreach (var product in products)
+        {
+            stringBuilder.Append($"{product.Name};");
+            stringBuilder.Append($"{product.ProductId};");
+            stringBuilder.Append($"{product.Name};");
+            stringBuilder.Append($"Numi;");
+            stringBuilder.Append($"0;");
+            stringBuilder.Append($"0;");
+            stringBuilder.Append($"pc;");
+            stringBuilder.Append($"0;");
+            stringBuilder.Append($"{product.Description}");
+            stringBuilder.AppendLine();
+        }
+        File.WriteAllText(path, stringBuilder.ToString());
+    }
+
 
     private void buttonRemove(object sender, EventArgs e)
     {

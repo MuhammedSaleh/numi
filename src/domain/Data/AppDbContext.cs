@@ -36,6 +36,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             new Product() {ProductId = "01010010007", Name = "Dreamy", Description = "Dreamy Connected Pocket Height 23CM", Width = 160, Length = 200, Height = 32, CategoryId = "001" },
             new Product() {ProductId = "01010010008", Name = "Dreamy", Description = "Dreamy Connected Pocket Height 23CM", Width = 180, Length = 200, Height = 32, CategoryId = "001" },
             new Product() {ProductId = "01010010009", Name = "Dreamy", Description = "Dreamy Connected Pocket Height 23CM", Width = 200, Length = 200, Height = 32, CategoryId = "001" },
+            new Product() {ProductId = "01010010010", Name = "Dreamy", Description = "Dreamy Connected Pocket Height 23CM", Width = 100, Length = 195, Height = 32, CategoryId = "001" },
+            new Product() {ProductId = "01010010011", Name = "Dreamy", Description = "Dreamy Connected Pocket Height 23CM", Width = 120, Length = 195, Height = 32, CategoryId = "001" },
+
             new Product() {ProductId = "01010020001", Name = "Sky", Description = "Sky Connected Pocket Height 26CM", Width = 90, Length = 200, Height = 26, CategoryId = "002" },
             new Product() {ProductId = "01010020002", Name = "Sky", Description = "Sky Connected Pocket Height 26CM", Width = 100, Length = 200, Height = 26, CategoryId = "002" },
             new Product() {ProductId = "01010020003", Name = "Sky", Description = "Sky Connected Pocket Height 26CM", Width = 110, Length = 200, Height = 26, CategoryId = "002" },
@@ -45,6 +48,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             new Product() {ProductId = "01010020007", Name = "Sky", Description = "Sky Connected Pocket Height 26CM", Width = 160, Length = 200, Height = 26, CategoryId = "002" },
             new Product() {ProductId = "01010020008", Name = "Sky", Description = "Sky Connected Pocket Height 26CM", Width = 180, Length = 200, Height = 26, CategoryId = "002" },
             new Product() {ProductId = "01010020009", Name = "Sky", Description = "Sky Connected Pocket Height 26CM", Width = 200, Length = 200, Height = 26, CategoryId = "002" },
+            new Product() {ProductId = "01010020010", Name = "Sky", Description = "Sky Connected Pocket Height 26CM", Width = 160, Length = 195, Height = 26, CategoryId = "002" },
+            new Product() {ProductId = "01010020011", Name = "Sky", Description = "Sky Connected Pocket Height 26CM", Width = 100, Length = 195, Height = 26, CategoryId = "002" },
+            new Product() {ProductId = "01010020012", Name = "Sky", Description = "Sky Connected Pocket Height 26CM", Width = 120, Length = 195, Height = 26, CategoryId = "002" },
 
             new Product() {ProductId = "01010030001", Name = "Sky Pillowtop", Description = "Sky Pillowtop Connected Pocket Height 31CM", Width = 90, Length = 200, Height = 31, CategoryId = "003" },
             new Product() {ProductId = "01010030002", Name = "Sky Pillowtop", Description = "Sky Pillowtop Connected Pocket Height 31CM", Width = 100, Length = 200, Height = 31, CategoryId = "003" },
@@ -75,6 +81,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             new Product() { ProductId = "01011020007", Name = "Calma", Description = "Calma Disconnected Pocket Height 27CM", Width = 160, Length = 200, Height = 27, CategoryId = "005" },
             new Product() { ProductId = "01011020008", Name = "Calma", Description = "Calma Disconnected Pocket Height 27CM", Width = 180, Length = 200, Height = 27, CategoryId = "005" },
             new Product() { ProductId = "01011020009", Name = "Calma", Description = "Calma Disconnected Pocket Height 27CM", Width = 200, Length = 200, Height = 27, CategoryId = "005" },
+            new Product() { ProductId = "01011020010", Name = "Calma", Description = "Calma Disconnected Pocket Height 27CM", Width = 160, Length = 195, Height = 27, CategoryId = "005" },
 
             new Product() { ProductId = "00000000001", Name = "Fiber Hollow", Description = "Pillow Fiber Hollow 50x70", Width = 70, Length = 50, CategoryId = "006" }
 
